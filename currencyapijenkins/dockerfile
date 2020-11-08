@@ -1,0 +1,4 @@
+FROM java:8
+EXPOSE 7078
+ADD /target/currencyapi-0.0.1-SNAPSHOT.jar currencyapi-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","currencyapi-0.0.1-SNAPSHOT.jar"]
