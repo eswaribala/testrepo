@@ -1,29 +1,15 @@
 pipeline {
-
-    agent any
-    tools {
-         maven "MAVEN_HOME"
-         jdk "JAVA_HOME" 
-    }
-    stages {
-        stage('Compile stage') {
-            steps {
-                bat "mvn clean compile" 
-        }
-    }
-
-         stage('testing stage') {
-             steps {
-                bat "mvn test"
-        }
-    }
-
-          stage('deployment stage') {
-              steps {
-                bat "mvn deploy"
-        }
-    }
-
-  }
-
-}
+    agent none
+   stages {     
+    stage('Maven Install') {
+      agent {         
+       docker {          
+         image 'maven:3.6.1'         
+     }       
+  }       
+  steps {
+       sh 'mvn clean install'
+       }
+     }
+   }
+ }
