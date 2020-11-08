@@ -17,6 +17,9 @@ pipeline {
       agent any
       steps {
         sh 'docker build -f dockerfile -t customerapijenkinsapp:latest .'
+        sh 'docker run -p 7078:7078 --name hsbc-c2 -v C:/Users/Balasubramaniam/.jenkins/workspace/currencyapidemo/ 
+--link hsbc-mysql:mysql -d currencyapijenkinsapp:latest'
+        
       }
     }
      
