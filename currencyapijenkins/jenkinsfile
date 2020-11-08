@@ -1,34 +1,28 @@
-node {
- 
-    withMaven(maven:'maven') {
- 
-        stage('Checkout') {
-            git url: 'https://github.com/eswaribala/testrepo/tree/main/currencyapijenkins', credentialsId: 'parameswaribala@gmail.com', branch: 'main'
-        }
- 
-        stage('Build') {
-            sh 'mvn clean install -DskipTests'
- 
-            def pom = readMavenPom file:'pom.xml'
-            print pom.version
-            env.version = pom.version
-        }
- 
-        stage('Image') {
-            dir ('currency-service') {
-                def app = docker.build "localhost:5000/currency-service:${env.version}"
-                app.push()
-            }
-        }
- 
-        stage ('Run') {
-            docker.image("localhost:5000/currency-service:${env.version}").run('-p 7080:7078 -h discovery --name discovery')
-        }
- 
-        stage ('Final') {
-            build job: 'account-service-pipeline', wait: false
-        }      
- 
+pipeline {
+
+    agent any
+    tools {
+        maven 'Maven_3.5.2' 
     }
- 
+    stages {
+        stage('Compile stage') {
+            steps {
+                bat "mvn clean compile" 
+        }
+    }
+
+         stage('testing stage') {
+             steps {
+                bat "mvn test"
+        }
+    }
+
+          stage('deployment stage') {
+              steps {
+                bat "mvn deploy"
+        }
+    }
+
+  }
+
 }
