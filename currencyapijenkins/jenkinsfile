@@ -1,22 +1,15 @@
-#!groovy
 pipeline {
-    agent none
-   stages {     
-    stage('Maven Install') {
-         
-  steps {
-       sh 'mvn clean install'
-       }
-     }
-     
-  stage('Docker Build') {
-      agent any
-      steps {
-        sh 'docker build -f dockerfile -t customerapijenkinsapp:latest .'
-        sh 'docker run -p 7078:7078 --name hsbc-c2 -v C:/Users/Balasubramaniam/.jenkins/workspace/currencyapidemo/ --link hsbc-mysql:mysql -d currencyapijenkinsapp:latest'
-        
-      }
+    agent any
+    stages {
+        stage('Build image') {
+            steps {
+                echo 'Starting to build docker image'
+
+                script {
+                    def customImage = docker.build("my-image:${env.BUILD_ID}")
+                    customImage.push()
+                }
+            }
+        }
     }
-     
-   }
- }
+}
