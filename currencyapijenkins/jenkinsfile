@@ -4,8 +4,8 @@ node('master') {
   
    stage('initialize')
    {
-       tool name: 'Maven3.6.1', type: 'maven'
-       mvnHome = tool 'Maven3.6.1'
+       tool name: 'Maven', type: 'maven'
+       mvnHome = tool 'Maven'
        path='C:/Users/Balasubramaniam/.jenkins/workspace/currencyapidemo/currencyapijenkins/pom.xml' 
    }
     
